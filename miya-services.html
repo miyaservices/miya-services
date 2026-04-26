@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIYA Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --white: #ffffff;
+  --ink: #181612;
+  --ink2: #52504a;
+  --ink3: #a09e98;
+  --border: #e4e1da;
+  --primary: #6c47ff;
+  --primary-light: #f0edff;
+  --primary-dark: #5535e0;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --card: #ffffff;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+/* ══ LOGIN ══ */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  background: var(--ink);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.login-left {
+  width: 420px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-right {
+  flex: 1;
+  background: linear-gradient(135deg, #6c47ff 0%, #3b1fa8 50%, #18161c 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,255,255,0.06), transparent);
+}
+
+.login-right::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  bottom: -100px; right: -100px;
+}
+
+.login-brand {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.login-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.login-sub { font-size: 14px; color: var(--ink3); margin-bottom: 36px; }
+
+.field-group { margin-bottom: 16px; }
+.field-label { font-size: 12px; font-weight: 600; color: var(--ink2); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.field-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  transition: all 0.15s;
+}
+.field-input:focus { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px rgba(108,71,255,0.1); }
+
+.field-pw-wrap { position: relative; }
+.field-pw-wrap .field-input { padding-right: 44px; }
+.pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: var(--ink3); }
+
+.error-box {
+  background: var(--red-light);
+  border: 1px solid rgba(220,38,38,0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--red);
+  margin-bottom: 14px;
+  display: none;
+}
+
+.btn-login-main {
+  width: 100%;
+  padding: 13px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+  letter-spacing: 0.2px;
+}
+.btn-login-main:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(108,71,255,0.35); }
+.btn-login-main:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.login-hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-hero-sub { font-size: 15px; color: rgba(255,255,255,0.6); position: relative; z-index: 1; line-height: 1.7; }
+
+.login-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+
+.feature-icon {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ══ APP ══ */
+#app { display: none; flex-direction: column; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar {
+  height: 58px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.topbar-brand {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+
+.topbar-brand .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; }
+
+.topbar-nav { display: flex; gap: 2px; flex: 1; overflow-x: auto; padding: 0 8px; }
+.topbar-nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover { background: var(--bg); color: var(--ink); }
+.nav-btn.active { background: var(--primary-light); color: var(--primary); font-weight: 700; }
+
+.topbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; flex-shrink: 0; }
+
+.date-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px; font-weight: 600;
+}
+.date-pill button { background: none; border: none; cursor: pointer; color: var(--ink3); font-size: 14px; padding: 0 2px; }
+.date-pill button:hover { color: var(--ink); }
+
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 12px 4px 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+}
+.user-chip:hover { border-color: var(--ink3); }
+.u-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.u-role { font-size: 10px; color: var(--ink3); }
+
+/* ══ CONTENT ══ */
+.content { flex: 1; padding: 28px; max-width: 1320px; width: 100%; margin: 0 auto; }
+
+.page { display: none; }
+.page.active { display: block; }
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
+.page-sub { font-size: 13px; color: var(--ink3); margin-top: 3px; }
+
+/* ══ STATS ══ */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: var(--white); border-radius: 14px; padding: 18px 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+.stat-val { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+.stat-lbl { font-size: 12px; color: var(--ink3); margin-top: 5px; }
+
+/* ══ CARDS ══ */
+.card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.card-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; font-weight: 700; }
+.card-body { padding: 20px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+/* ══ BTNS ══ */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 9px; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans',sans-serif; font-size: 13px; font-weight: 600; transition: all 0.15s; white-space: nowrap; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: var(--bg); color: var(--ink); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--ink2); }
+.btn-ghost { background: transparent; color: var(--ink2); }
+.btn-ghost:hover { background: var(--bg); }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { background: #047857; }
+.btn-red { background: var(--red-light); color: var(--red); }
+.btn-red:hover { background: #fee2e2; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ══ FORMS ══ */
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--ink3); margin-bottom: 5px; }
+input[type="text"], input[type="password"], input[type="time"], input[type="url"], input[type="number"], select, textarea {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 9px;
+  font-family: 'Plus Jakarta Sans',sans-serif; font-size: 13px; color: var(--ink);
+  background: var(--white); outline: none; transition: border-color 0.15s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108,71,255,0.08); }
+textarea { resize: vertical; min-height: 70px; }
+select option { background: var(--white); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* ══ TABLE ══ */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink3); border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #faf9f7; }
+
+/* ══ BADGES ══ */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge-purple { background: var(--primary-light); color: var(--primary); }
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-amber { background: var(--amber-light); color: var(--amber); }
+.badge-red { background: var(--red-light); color: var(--red); }
+.badge-blue { background: var(--blue-light); color: var(--blue); }
+.badge-gray { background: var(--bg); color: var(--ink3); border: 1px solid var(--border); }
+
+/* ══ LOGEMENT CARDS ══ */
+.logement-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
+.logement-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.2s; cursor: pointer; box-shadow: var(--shadow); }
+.logement-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(108,71,255,0.12); transform: translateY(-2px); }
+.lc-top { padding: 16px; display: flex; align-items: flex-start; gap: 12px; }
+.lc-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.lc-name { font-weight: 700; font-size: 14px; }
+.lc-addr { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.lc-bottom { padding: 10px 16px; background: var(--bg); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lc-meta { font-size: 11px; color: var(--ink3); }
+
+/* ══ TOURNÉE ══ */
+.tournee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 16px; }
+.tc { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.tc-header { padding: 16px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.tc-avatar { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.tc-name { font-family: 'Bricolage Grotesque',sans-serif; font-size: 16px; font-weight: 700; }
+.tc-meta { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.tc-stats { display: flex; border-bottom: 1px solid var(--border); }
+.ts { flex: 1; padding: 10px; text-align: center; border-right: 1px solid var(--border); }
+.ts:last-child { border-right: none; }
+.ts-val { font-family: 'Bricolage Grotesque',sans-serif; font-size: 18px; font-weight: 800; }
+.ts-lbl { font-size: 9px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.5px; }
+.stops { padding: 12px 16px; }
+.stop-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.stop-row:last-child { border-bottom: none; }
+.stop-num { width: 24px; height: 24px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.stop-content { flex: 1; }
+.stop-name { font-size: 13px; font-weight: 600; }
+.stop-addr { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+.chip { padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 500; background: var(--bg); color: var(--ink3); border: 1px solid var(--border); }
+.chip-t { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+.chip-d { background: var(--amber-light); color: var(--amber); border-color: transparent; }
+.chip-g { background: var(--green-light); color: var(--green); border-color: transparent; }
+.travel-line { font-size: 10px; color: var(--ink3); padding: 3px 0 3px 34px; }
+.tc-actions { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+
+/* ══ USERS TABLE (admin) ══ */
+.user-row-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+
+/* ══ MA TOURNÉE ══ */
+.mt-header { background: var(--primary); color: #fff; padding: 20px 24px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 20px rgba(108,71,255,0.3); }
+.mt-stops { display: flex; flex-direction: column; gap: 12px; }
+.mt-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow); }
+.mt-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque',sans-serif; font-size: 16px; font-weight: 900; flex-shrink: 0; color: #fff; }
+.mt-name { font-size: 15px; font-weight: 700; }
+.mt-addr { font-size: 13px; color: var(--ink3); margin-top: 3px; }
+.mt-times { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+/* ══ IMPORT ══ */
+.import-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.import-zone:hover, .import-zone.over { border-color: var(--primary); background: var(--primary-light); }
+.import-zone input { display: none; }
+
+/* ══ MODAL ══ */
+.overlay { position: fixed; inset: 0; background: rgba(24,22,18,0.55); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--white); border-radius: 18px; padding: 28px; width: 520px; max-width: 93vw; max-height: 88vh; overflow-y: auto; transform: scale(0.97) translateY(8px); transition: transform 0.2s; box-shadow: var(--shadow-lg); }
+.overlay.open .modal { transform: scale(1) translateY(0); }
+.modal-title { font-family: 'Bricolage Grotesque',sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ink3); line-height: 1; }
+.modal-close:hover { color: var(--ink); }
+
+/* ══ TOAST ══ */
+.toasts { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--ink); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 8px; animation: tIn 0.25s ease; box-shadow: var(--shadow-lg); min-width: 230px; }
+@keyframes tIn { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:translateX(0); } }
+.toast.success { background: var(--green); }
+.toast.error { background: var(--red); }
+.toast.info { background: var(--blue); }
+
+/* ══ MISC ══ */
+.sep { height: 1px; background: var(--border); margin: 16px 0; }
+.empty { text-align: center; padding: 60px 20px; color: var(--ink3); }
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-title { font-family: 'Bricolage Grotesque',sans-serif; font-size: 18px; color: var(--ink); margin-bottom: 6px; }
+.empty-text { font-size: 13px; line-height: 1.7; }
+.cdot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.ics-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg); border-radius: 10px; margin-bottom: 6px; border: 1px solid var(--border); }
+.platform-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; }
+.platform-airbnb { background: #fde8e1; color: #ff5a5f; }
+.platform-booking { background: var(--blue-light); color: var(--blue); }
+.platform-other { background: var(--bg); color: var(--ink3); border: 1px solid var(--border); }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ══ ACCÈS REFUSÉ ══ */
+.access-denied { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center; }
+
+@media(max-width:768px) {
+  .login-right { display: none; }
+  .login-left { width: 100%; padding: 40px 24px; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .content { padding: 14px; }
+  .topbar-nav .nav-btn span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="loginScreen">
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="brand-dot"></div>
+      MIYA Services
+    </div>
+    <div class="login-title">Bon retour 👋</div>
+    <div class="login-sub">Connectez-vous pour accéder à votre espace</div>
+
+    <div id="loginError" class="error-box">Identifiant ou mot de passe incorrect.</div>
+
+    <div class="field-group">
+      <label class="field-label">Identifiant</label>
+      <input class="field-input" type="text" id="loginUser" placeholder="votre.identifiant" autocomplete="username">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Mot de passe</label>
+      <div class="field-pw-wrap">
+        <input class="field-input" type="password" id="loginPw" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pw-toggle" onclick="togglePw('loginPw',this)" tabindex="-1">👁</button>
+      </div>
+    </div>
+    <button class="btn-login-main" id="loginBtn" onclick="doLogin()">Se connecter →</button>
+
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--ink3);text-align:center;">
+      Accès réservé aux membres de l'équipe MIYA Services.<br>Contactez l'administrateur pour obtenir vos identifiants.
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-hero-title">Gérez vos tournées<br>en un coup d'œil.</div>
+    <div class="login-hero-sub">Planning, équipes, logements et WhatsApp — tout en un seul endroit pour vos équipes Airbnb à Toulouse.</div>
+    <div class="login-features">
+      <div class="login-feature"><div class="feature-icon">🏠</div>Synchronisation calendriers Airbnb & Booking</div>
+      <div class="login-feature"><div class="feature-icon">⚡</div>Optimisation automatique des itinéraires</div>
+      <div class="login-feature"><div class="feature-icon">💬</div>Envoi des plannings sur WhatsApp en 1 clic</div>
+      <div class="login-feature"><div class="feature-icon">🛡️</div>Accès sécurisé par compte individuel</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-brand"><div class="dot"></div> MIYA Services</div>
+    <nav class="topbar-nav" id="topNav"></nav>
+    <div class="topbar-right">
+      <div class="date-pill">
+        <button onclick="changeDate(-1)">‹</button>
+        <span id="dateLabel" style="min-width:130px;text-align:center;"></span>
+        <button onclick="changeDate(1)">›</button>
+      </div>
+      <div class="user-chip" onclick="openModal('profileModal')">
+        <div class="u-avatar" id="uAvatar"></div>
+        <div>
+          <div id="uName" style="font-size:12px;font-weight:700;"></div>
+          <div class="u-role" id="uRole"></div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page" id="pageDashboard">
+      <div class="page-header">
+        <div><div class="page-title">Tableau de bord</div><div class="page-sub" id="dashSub"></div></div>
+        <button class="btn btn-primary" onclick="optimizeRoutes()">⚡ Générer les tournées</button>
+      </div>
+      <div class="stats-row" id="statsRow"></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Ménages du jour</div><span class="badge badge-purple" id="todayBadge">0</span></div>
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrap"><table><thead><tr><th>Logement</th><th>Check-out</th><th>Check-in</th><th>Équipe</th></tr></thead><tbody id="todayTbody"></tbody></table></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Équipes aujourd'hui</div></div>
+          <div class="card-body" id="teamsToday" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LOGEMENTS ══ -->
+    <div class="page" id="pageLogements">
+      <div class="page-header">
+        <div><div class="page-title">Logements</div><div class="page-sub">Propriétés et calendriers iCal</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary" onclick="openModal('importModal')">📥 Import</button>
+          <button class="btn btn-primary" onclick="newLogementModal()">+ Ajouter</button>
+        </div>
+      </div>
+      <div class="logement-grid" id="logementGrid"></div>
+    </div>
+
+    <!-- ══ ÉQUIPES ══ -->
+    <div class="page" id="pageEquipes">
+      <div class="page-header">
+        <div><div class="page-title">Équipes</div><div class="page-sub">Gestion des équipes de ménage</div></div>
+        <button class="btn btn-primary" onclick="openModal('equipeModal')">+ Nouvelle équipe</button>
+      </div>
+      <div class="grid3" id="equipesGrid"></div>
+    </div>
+
+    <!-- ══ TOURNÉES ══ -->
+    <div class="page" id="pageTournees">
+      <div class="page-header">
+        <div><div class="page-title">Tournées</div><div class="page-sub" id="tourneeSub"></div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary" onclick="optimizeRoutes()">🔄 Recalculer</button>
+          <button class="btn btn-green" onclick="sendAllWhatsApp()">💬 Tout envoyer WhatsApp</button>
+        </div>
+      </div>
+      <div id="tourneesWrap"></div>
+    </div>
+
+    <!-- ══ MA TOURNÉE ══ -->
+    <div class="page" id="pageMaTournee">
+      <div class="page-header">
+        <div><div class="page-title">Ma tournée</div><div class="page-sub" id="maSub"></div></div>
+      </div>
+      <div id="maTourneeWrap"></div>
+    </div>
+
+    <!-- ══ COMPTES (admin only) ══ -->
+    <div class="page" id="pageComptes">
+      <div class="page-header">
+        <div><div class="page-title">Gestion des comptes</div><div class="page-sub">Créez et gérez les accès de votre équipe</div></div>
+        <button class="btn btn-primary" onclick="openModal('userModal')">+ Nouveau compte</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Utilisateurs actifs</div>
+          <span class="badge badge-purple" id="userCount">0 comptes</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th></th><th>Identifiant</th><th>Nom complet</th><th>Rôle</th><th>Équipe</th><th>Dernière connexion</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="usersTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PARAMÈTRES ══ -->
+    <div class="page" id="pageParametres">
+      <div class="page-header"><div class="page-title">Paramètres</div></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Optimisation des tournées</div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Point de départ commun</label><input type="text" id="sBase" placeholder="Ex: Place du Capitole, Toulouse"></div>
+            <div class="row2">
+              <div class="form-group"><label>Début de journée</label><input type="time" id="sStart" value="08:30"></div>
+              <div class="form-group"><label>Fin de journée</label><input type="time" id="sEnd" value="19:00"></div>
+            </div>
+            <div class="row2">
+              <div class="form-group"><label>Vitesse moy. (km/h)</label><input type="number" id="sSpeed" value="25"></div>
+              <div class="form-group"><label>Pause déjeuner</label><select id="sLunch"><option value="0">Aucune</option><option value="30" selected>30 min</option><option value="60">1h</option></select></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Sauvegarder</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">WhatsApp</div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Message d'intro</label><textarea id="sWaIntro">Bonjour {equipe} ! 👋 Voici votre tournée du {date} :</textarea></div>
+            <div class="form-group"><label>Signature</label><input type="text" id="sWaSig" value="Bonne journée ! 🏠 — MIYA Services"></div>
+            <div class="form-group"><label>Nom société</label><input type="text" id="sCompany" value="MIYA Services"></div>
+            <button class="btn btn-primary" onclick="saveSettings()">Sauvegarder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- content -->
+</div><!-- app -->
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Profil -->
+<div class="overlay" id="profileModal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-title">Mon profil <button class="modal-close" onclick="closeModal('profileModal')">✕</button></div>
+    <div id="profileContent"></div>
+  </div>
+</div>
+
+<!-- Nouveau compte -->
+<div class="overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-title">Nouveau compte <button class="modal-close" onclick="closeModal('userModal')">✕</button></div>
+    <div class="row2">
+      <div class="form-group"><label>Identifiant de connexion</label><input type="text" id="uLogin" placeholder="Ex: maria.dupont"></div>
+      <div class="form-group"><label>Mot de passe</label>
+        <div class="field-pw-wrap"><input type="password" id="uPw" placeholder="Min. 6 caractères"><button class="pw-toggle" onclick="togglePw('uPw',this)" tabindex="-1">👁</button></div>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="form-group"><label>Prénom</label><input type="text" id="uFirst" placeholder="Maria"></div>
+      <div class="form-group"><label>Nom</label><input type="text" id="uLast" placeholder="Dupont"></div>
+    </div>
+    <div class="row2">
+      <div class="form-group"><label>Rôle</label>
+        <select id="uRole">
+          <option value="chef">Chef d'équipe</option>
+          <option value="agent">Agent</option>
+          <option value="viewer">Lecture seule</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Équipe</label><select id="uTeam"><option value="">Aucune</option></select></div>
+    </div>
+    <div class="form-group"><label>WhatsApp</label><input type="text" id="uWa" placeholder="+33 6 xx xx xx xx"></div>
+    <div id="uError" class="error-box">Cet identifiant existe déjà.</div>
+    <button class="btn btn-primary btn-full" onclick="createUser()">Créer le compte</button>
+  </div>
+</div>
+
+<!-- Modifier mot de passe -->
+<div class="overlay" id="pwModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-title">Modifier le mot de passe <button class="modal-close" onclick="closeModal('pwModal')">✕</button></div>
+    <input type="hidden" id="pwUserId">
+    <div class="form-group"><label>Nouveau mot de passe</label>
+      <div class="field-pw-wrap"><input type="password" id="newPw" placeholder="Min. 6 caractères"><button class="pw-toggle" onclick="togglePw('newPw',this)" tabindex="-1">👁</button></div>
+    </div>
+    <div class="form-group"><label>Confirmer</label>
+      <div class="field-pw-wrap"><input type="password" id="confirmPw" placeholder="Répétez le mot de passe"><button class="pw-toggle" onclick="togglePw('confirmPw',this)" tabindex="-1">👁</button></div>
+    </div>
+    <div id="pwError" class="error-box"></div>
+    <button class="btn btn-primary btn-full" onclick="savePw()">Enregistrer</button>
+  </div>
+</div>
+
+<!-- Logement -->
+<div class="overlay" id="logementModal">
+  <div class="modal">
+    <div class="modal-title" id="logementModalTitle">Nouveau logement <button class="modal-close" onclick="closeModal('logementModal')">✕</button></div>
+    <div class="form-group"><label>Nom du logement</label><input type="text" id="lName" placeholder="Ex: Studio Capitole T2"></div>
+    <div class="form-group"><label>Adresse complète</label><input type="text" id="lAddr" placeholder="Ex: 12 Place du Capitole, Toulouse"></div>
+    <div class="row2">
+      <div class="form-group"><label>Check-out</label><input type="time" id="lOut" value="11:00"></div>
+      <div class="form-group"><label>Check-in</label><input type="time" id="lIn" value="15:00"></div>
+    </div>
+    <div class="row3">
+      <div class="form-group"><label>Pièces</label><input type="number" id="lRooms" value="2" min="1"></div>
+      <div class="form-group"><label>Durée (min)</label><input type="number" id="lDur" value="90" min="30"></div>
+      <div class="form-group"><label>Équipe fixe</label><select id="lTeam"><option value="">Auto</option></select></div>
+    </div>
+    <div class="sep"></div>
+    <div style="font-weight:700;font-size:13px;margin-bottom:10px;">Liens calendriers iCal</div>
+    <div id="lIcsList"></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <select id="lIcsPlatform" style="width:130px;"><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="other">Autre</option></select>
+      <input type="url" id="lIcsUrl" placeholder="https://...ics" style="flex:1;">
+      <button class="btn btn-secondary btn-sm" onclick="addIcs()">+ Ajouter</button>
+    </div>
+    <button class="btn btn-primary btn-full" id="lSaveBtn" onclick="saveLogement()">Enregistrer</button>
+  </div>
+</div>
+
+<!-- Équipe -->
+<div class="overlay" id="equipeModal">
+  <div class="modal">
+    <div class="modal-title">Nouvelle équipe <button class="modal-close" onclick="closeModal('equipeModal')">✕</button></div>
+    <div class="form-group"><label>Nom de l'équipe</label><input type="text" id="eName" placeholder="Ex: Équipe Alpha"></div>
+    <div class="row2">
+      <div class="form-group"><label>Emoji</label><select id="eEmoji"><option>🧹</option><option>✨</option><option>⭐</option><option>🏠</option><option>💪</option><option>🚀</option><option>🔥</option><option>💎</option></select></div>
+      <div class="form-group"><label>Couleur</label><select id="eColor"><option value="#6c47ff">Violet</option><option value="#e8521a">Orange</option><option value="#2563eb">Bleu</option><option value="#16a34a">Vert</option><option value="#d97706">Ambre</option><option value="#dc2626">Rouge</option><option value="#0891b2">Cyan</option><option value="#be185d">Rose</option></select></div>
+    </div>
+    <div class="row2">
+      <div class="form-group"><label>Membres</label><input type="number" id="eSize" value="2" min="1"></div>
+      <div class="form-group"><label>Zone préférée</label><input type="text" id="eZone" placeholder="Centre, Nord…"></div>
+    </div>
+    <div class="form-group"><label>WhatsApp chef d'équipe</label><input type="text" id="eWa" placeholder="+33 6 xx xx xx xx"></div>
+    <div class="form-group"><label>Prénoms membres (séparés par virgule)</label><input type="text" id="eMembers" placeholder="Maria, Jules, Sara"></div>
+    <button class="btn btn-primary btn-full" onclick="saveEquipe()">Créer l'équipe</button>
+  </div>
+</div>
+
+<!-- Import -->
+<div class="overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-title">Import de logements <button class="modal-close" onclick="closeModal('importModal')">✕</button></div>
+    <div class="import-zone" id="importZone" onclick="document.getElementById('fileInput').click()">
+      <input type="file" id="fileInput" accept=".csv,.ics" onchange="handleImport(event)">
+      <div style="font-size:36px;margin-bottom:8px;">📥</div>
+      <div style="font-size:13px;font-weight:600;">Glissez votre fichier ici</div>
+      <div style="font-size:11px;color:var(--ink3);margin-top:4px;">CSV ou ICS (Airbnb, Booking, easyical…)</div>
+    </div>
+    <div class="sep"></div>
+    <code style="font-size:10px;background:var(--bg);padding:10px;border-radius:8px;display:block;color:var(--ink2);line-height:1.8;">nom,adresse,checkout,checkin,pieces,duree<br>Studio Cap,12 Rue X Toulouse,11:00,15:00,2,90</code>
+    <div class="sep"></div>
+    <button class="btn btn-secondary btn-full" onclick="loadDemo()">🎲 Charger démo Toulouse (12 logements)</button>
+  </div>
+</div>
+
+<!-- WhatsApp -->
+<div class="overlay" id="waModal">
+  <div class="modal">
+    <div class="modal-title">Envoyer sur WhatsApp <button class="modal-close" onclick="closeModal('waModal')">✕</button></div>
+    <div id="waContent"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+// ══════════════════════════════════════
+//  USERS DATABASE (localStorage)
+// ══════════════════════════════════════
+function loadUsers() {
+  const raw = localStorage.getItem('miya_users');
+  if (raw) return JSON.parse(raw);
+  // Default admin account
+  const defaults = [{
+    id: 1, login: 'admin', pw: 'miya2024',
+    first: 'Admin', last: 'MIYA', role: 'admin',
+    teamId: null, wa: '', active: true, lastLogin: null,
+    color: '#6c47ff'
+  }];
+  saveUsers(defaults);
+  return defaults;
+}
+
+function saveUsers(u) { localStorage.setItem('miya_users', JSON.stringify(u)); }
+let users = loadUsers();
+
+// ══════════════════════════════════════
+//  APP STATE
+// ══════════════════════════════════════
+let currentUser = null;
+let currentDate = new Date();
+let logements = JSON.parse(localStorage.getItem('miya_logements') || '[]');
+let equipes = JSON.parse(localStorage.getItem('miya_equipes') || '[]');
+let routes = [];
+let tempIcs = [];
+let editingLogId = null;
+let settings = JSON.parse(localStorage.getItem('miya_settings') || '{"base":"","start":"08:30","end":"19:00","speed":25,"lunch":30,"waIntro":"Bonjour {equipe} ! 👋 Voici votre tournée du {date} :","waSig":"Bonne journée ! 🏠 — MIYA Services","company":"MIYA Services"}');
+
+function saveData() {
+  localStorage.setItem('miya_logements', JSON.stringify(logements));
+  localStorage.setItem('miya_equipes', JSON.stringify(equipes));
+  localStorage.setItem('miya_settings', JSON.stringify(settings));
+}
+
+// ══════════════════════════════════════
+//  LOGIN / LOGOUT
+// ══════════════════════════════════════
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+}
+
+function doLogin() {
+  const login = document.getElementById('loginUser').value.trim().toLowerCase();
+  const pw = document.getElementById('loginPw').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  if (!login || !pw) { errEl.style.display='block'; errEl.textContent='Veuillez remplir tous les champs.'; return; }
+
+  users = loadUsers();
+  const user = users.find(u => u.login.toLowerCase() === login && u.pw === pw && u.active);
+  if (!user) { errEl.style.display='block'; errEl.textContent='Identifiant ou mot de passe incorrect.'; document.getElementById('loginPw').value=''; return; }
+
+  errEl.style.display='none';
+  btn.disabled = true; btn.textContent = 'Connexion…';
+
+  // Update last login
+  user.lastLogin = new Date().toLocaleString('fr-FR');
+  saveUsers(users);
+
+  currentUser = user;
+  setTimeout(() => {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('app').style.flexDirection = 'column';
+    btn.disabled = false; btn.textContent = 'Se connecter →';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPw').value = '';
+    setupApp();
+  }, 400);
+}
+
+function doLogout() {
+  currentUser = null;
+  routes = [];
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// ══════════════════════════════════════
+//  APP SETUP
+// ══════════════════════════════════════
+const ROLE_LABELS = { admin:'Administrateur', chef:"Chef d'équipe", agent:'Agent', viewer:'Lecture seule' };
+const ROLE_COLORS = { admin:'#6c47ff', chef:'#2563eb', agent:'#059669', viewer:'#9a9490' };
+
+function setupApp() {
+  const u = currentUser;
+  const color = u.color || ROLE_COLORS[u.role] || '#6c47ff';
+  document.getElementById('uAvatar').style.background = color;
+  document.getElementById('uAvatar').textContent = (u.first[0]||'?').toUpperCase();
+  document.getElementById('uName').textContent = u.first + ' ' + u.last;
+  document.getElementById('uRole').textContent = ROLE_LABELS[u.role] || u.role;
+
+  // Nav
+  const nav = document.getElementById('topNav');
+  const pages = navPages();
+  nav.innerHTML = pages.map((p,i) =>
+    `<button class="nav-btn${i===0?' active':''}" data-page="${p.id}" onclick="showPage('${p.id}',this)">${p.icon} <span>${p.label}</span></button>`
+  ).join('');
+
+  updateDateLabel();
+  showPage(pages[0].id, nav.querySelector('.nav-btn'));
+  renderAll();
+}
+
+function navPages() {
+  const role = currentUser.role;
+  const all = [
+    {id:'pageDashboard', icon:'📊', label:'Dashboard', roles:['admin','chef','viewer']},
+    {id:'pageLogements', icon:'🏠', label:'Logements', roles:['admin','chef']},
+    {id:'pageEquipes', icon:'👥', label:'Équipes', roles:['admin','chef']},
+    {id:'pageTournees', icon:'🗺️', label:'Tournées', roles:['admin','chef','viewer']},
+    {id:'pageMaTournee', icon:'📍', label:'Ma tournée', roles:['agent','chef']},
+    {id:'pageComptes', icon:'🛡️', label:'Comptes', roles:['admin']},
+    {id:'pageParametres', icon:'⚙️', label:'Paramètres', roles:['admin']},
+  ];
+  return all.filter(p => p.roles.includes(role));
+}
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderPage(id);
+}
+
+// ══════════════════════════════════════
+//  DATE
+// ══════════════════════════════════════
+function changeDate(dir) {
+  currentDate.setDate(currentDate.getDate() + dir);
+  updateDateLabel();
+  routes = [];
+  renderAll();
+}
+
+function updateDateLabel() {
+  document.getElementById('dateLabel').textContent = currentDate.toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'long'});
+  const sub = document.getElementById('dashSub');
+  if (sub) sub.textContent = currentDate.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+}
+
+// ══════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════
+function renderAll() { renderDashboard(); renderLogements(); renderEquipes(); renderTournees(); renderMaTournee(); renderUsers(); updateAllSelects(); }
+function renderPage(id) {
+  if (id==='pageDashboard') renderDashboard();
+  if (id==='pageLogements') renderLogements();
+  if (id==='pageEquipes') renderEquipes();
+  if (id==='pageTournees') renderTournees();
+  if (id==='pageMaTournee') renderMaTournee();
+  if (id==='pageComptes') renderUsers();
+}
+
+// ══════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════
+function renderDashboard() {
+  document.getElementById('todayBadge').textContent = logements.length + ' logements';
+  document.getElementById('statsRow').innerHTML = [
+    {val:logements.length, lbl:'Logements', color:'var(--primary)'},
+    {val:equipes.length, lbl:'Équipes', color:'var(--blue)'},
+    {val:users.filter(u=>u.active).length, lbl:'Comptes actifs', color:'var(--green)'},
+    {val:routes.length?routes.reduce((a,r)=>a+r.totalKm,0)+'km':'—', lbl:'Distance totale', color:'var(--amber)'},
+  ].map(s=>`<div class="stat-card"><div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+
+  const tbody = document.getElementById('todayTbody');
+  if (!logements.length) { tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--ink3);">Aucun logement configuré</td></tr>'; }
+  else tbody.innerHTML = logements.map(l => {
+    const t = equipes.find(e=>e.id==l.teamId);
+    return `<tr><td><strong>${l.name}</strong><div style="font-size:11px;color:var(--ink3);">${l.address||'—'}</div></td><td>${l.checkout}</td><td>${l.checkin}</td><td>${t?`<span style="display:flex;align-items:center;gap:5px;"><span class="cdot" style="background:${t.color}"></span>${t.emoji} ${t.name}</span>`:'<span class="badge badge-gray">Non assigné</span>'}</td></tr>`;
+  }).join('');
+
+  const tt = document.getElementById('teamsToday');
+  if (!equipes.length) { tt.innerHTML='<div class="empty" style="padding:30px"><div class="empty-icon">👥</div><div class="empty-title">Aucune équipe</div></div>'; return; }
+  tt.innerHTML = equipes.map(e => {
+    const count = logements.filter(l=>l.teamId==e.id).length;
+    const r = routes.find(r=>r.teamId==e.id);
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+      <div style="width:38px;height:38px;border-radius:10px;background:${e.color}22;border:1.5px solid ${e.color}55;display:flex;align-items:center;justify-content:center;font-size:18px;">${e.emoji}</div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${e.name}</div><div style="font-size:11px;color:var(--ink3);">${e.size} membre${e.size>1?'s':''} · ${count} logement${count!==1?'s':''}</div></div>
+      ${r?`<div style="text-align:right;"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:${e.color}">${r.totalKm}km</div><div style="font-size:10px;color:var(--ink3);">${Math.floor(r.totalMins/60)}h${(r.totalMins%60).toString().padStart(2,'0')}</div></div>`:'<span class="badge badge-gray">—</span>'}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+//  LOGEMENTS
+// ══════════════════════════════════════
+function renderLogements() {
+  const g = document.getElementById('logementGrid');
+  if (!logements.length) { g.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏠</div><div class="empty-title">Aucun logement</div><div class="empty-text">Ajoutez vos propriétés ou importez un fichier CSV/ICS.</div></div>`; return; }
+  g.innerHTML = logements.map(l => {
+    const t = equipes.find(e=>e.id==l.teamId);
+    return `<div class="logement-card" onclick="editLogement(${l.id})">
+      <div class="lc-top">
+        <div class="lc-icon" style="background:${t?t.color+'22':'var(--bg)'};">${t?t.emoji:'🏠'}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="lc-name">${l.name}</div>
+          <div class="lc-addr">${l.address||'Adresse non renseignée'}</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;">
+            ${l.ics?.map(i=>`<span class="platform-tag platform-${i.platform}">${i.platform==='airbnb'?'Airbnb':i.platform==='booking'?'Booking':'Autre'}</span>`).join('')||'<span class="badge badge-gray" style="font-size:10px;">Pas de sync iCal</span>'}
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();deleteLogement(${l.id})" style="color:var(--red)">🗑</button>
+      </div>
+      <div class="lc-bottom">
+        <div class="lc-meta">🕐 ${l.checkout}→${l.checkin}</div>
+        <div class="lc-meta">⏱ ${l.duration}min</div>
+        <div class="lc-meta">🛏 ${l.rooms}p</div>
+        ${t?`<span style="font-size:11px;color:${t.color};font-weight:600;">${t.name}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function newLogementModal() {
+  editingLogId = null;
+  document.getElementById('logementModalTitle').innerHTML = 'Nouveau logement <button class="modal-close" onclick="closeModal(\'logementModal\')">✕</button>';
+  document.getElementById('lSaveBtn').textContent = 'Enregistrer';
+  document.getElementById('lSaveBtn').onclick = saveLogement;
+  ['lName','lAddr'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('lOut').value='11:00';
+  document.getElementById('lIn').value='15:00';
+  document.getElementById('lRooms').value=2;
+  document.getElementById('lDur').value=90;
+  document.getElementById('lTeam').value='';
+  tempIcs=[]; renderTempIcs();
+  openModal('logementModal');
+}
+
+function editLogement(id) {
+  const l = logements.find(x=>x.id===id);
+  if (!l) return;
+  editingLogId = id;
+  document.getElementById('logementModalTitle').innerHTML = 'Modifier logement <button class="modal-close" onclick="closeModal(\'logementModal\')">✕</button>';
+  document.getElementById('lName').value=l.name;
+  document.getElementById('lAddr').value=l.address||'';
+  document.getElementById('lOut').value=l.checkout;
+  document.getElementById('lIn').value=l.checkin;
+  document.getElementById('lRooms').value=l.rooms;
+  document.getElementById('lDur').value=l.duration;
+  document.getElementById('lTeam').value=l.teamId||'';
+  tempIcs=l.ics?[...l.ics]:[];
+  renderTempIcs();
+  document.getElementById('lSaveBtn').textContent='Mettre à jour';
+  document.getElementById('lSaveBtn').onclick = saveLogement;
+  openModal('logementModal');
+}
+
+function saveLogement() {
+  const name = document.getElementById('lName').value.trim();
+  if (!name) { toast('Entrez un nom de logement','error'); return; }
+  if (editingLogId) {
+    const l = logements.find(x=>x.id===editingLogId);
+    if (l) { Object.assign(l, getLogFormData()); l.ics=[...tempIcs]; }
+    toast(`Logement mis à jour ✓`,'success');
+  } else {
+    logements.push({ id:Date.now(), ...getLogFormData(), ics:[...tempIcs] });
+    toast(`Logement "${name}" ajouté ✓`,'success');
+  }
+  tempIcs=[]; editingLogId=null;
+  saveData(); closeModal('logementModal'); renderAll();
+}
+
+function getLogFormData() {
+  return {
+    name: document.getElementById('lName').value.trim(),
+    address: document.getElementById('lAddr').value.trim(),
+    checkout: document.getElementById('lOut').value,
+    checkin: document.getElementById('lIn').value,
+    rooms: parseInt(document.getElementById('lRooms').value)||2,
+    duration: parseInt(document.getElementById('lDur').value)||90,
+    teamId: document.getElementById('lTeam').value ? parseInt(document.getElementById('lTeam').value) : null
+  };
+}
+
+function deleteLogement(id) {
+  if (!confirm('Supprimer ce logement ?')) return;
+  logements = logements.filter(l=>l.id!==id);
+  saveData(); renderAll(); toast('Logement supprimé','success');
+}
+
+function addIcs() {
+  const url=document.getElementById('lIcsUrl').value.trim();
+  const platform=document.getElementById('lIcsPlatform').value;
+  if (!url||!url.startsWith('http')) { toast('URL invalide','error'); return; }
+  tempIcs.push({url,platform,lastSync:null});
+  document.getElementById('lIcsUrl').value='';
+  renderTempIcs(); toast('Lien iCal ajouté','success');
+}
+
+function renderTempIcs() {
+  document.getElementById('lIcsList').innerHTML = tempIcs.map((ic,i)=>`
+    <div class="ics-item">
+      <div style="width:8px;height:8px;border-radius:50%;background:${ic.platform==='airbnb'?'#ff5a5f':ic.platform==='booking'?'#2563eb':'#9a9490'};flex-shrink:0;"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:600;">${ic.platform==='airbnb'?'Airbnb':ic.platform==='booking'?'Booking.com':'Autre'}</div>
+        <div style="font-size:10px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ic.url}</div>
+        <div style="font-size:10px;color:${ic.lastSync?'var(--green)':'var(--amber)'};">${ic.lastSync?'✓ Synchro '+ic.lastSync:'Non synchronisé'}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="tempIcs.splice(${i},1);renderTempIcs()">✕</button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════
+//  ÉQUIPES
+// ══════════════════════════════════════
+function renderEquipes() {
+  const g=document.getElementById('equipesGrid');
+  if (!equipes.length) { g.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div><div class="empty-title">Aucune équipe</div><div class="empty-text">Créez vos équipes de ménage.</div></div>`; return; }
+  g.innerHTML=equipes.map(e=>{
+    const cnt=logements.filter(l=>l.teamId==e.id).length;
+    const mbs=e.members?e.members.split(',').map(m=>m.trim()).filter(Boolean):[];
+    return `<div class="card">
+      <div class="card-header" style="border-left:3px solid ${e.color};">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:10px;background:${e.color};display:flex;align-items:center;justify-content:center;font-size:18px;">${e.emoji}</div>
+          <div><div class="card-title">${e.name}</div><div style="font-size:11px;color:var(--ink3);">${e.zone||'Toutes zones'}</div></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteEquipe(${e.id})">🗑</button>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+          <div style="background:var(--bg);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:${e.color}">${e.size}</div><div style="font-size:10px;color:var(--ink3);">membres</div></div>
+          <div style="background:var(--bg);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:${e.color}">${cnt}</div><div style="font-size:10px;color:var(--ink3);">logements</div></div>
+        </div>
+        ${mbs.length?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;">${mbs.map(m=>`<span class="badge badge-gray">${m}</span>`).join('')}</div>`:''}
+        ${e.wa?`<div style="font-size:11px;color:var(--ink3);">💬 ${e.wa}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function saveEquipe() {
+  const name=document.getElementById('eName').value.trim();
+  if (!name) { toast('Entrez un nom','error'); return; }
+  equipes.push({ id:Date.now(), name, emoji:document.getElementById('eEmoji').value, color:document.getElementById('eColor').value, size:parseInt(document.getElementById('eSize').value)||2, zone:document.getElementById('eZone').value.trim(), wa:document.getElementById('eWa').value.trim(), members:document.getElementById('eMembers').value.trim() });
+  saveData(); closeModal('equipeModal'); renderAll(); toast(`Équipe "${name}" créée ✓`,'success');
+  document.getElementById('eName').value='';
+}
+
+function deleteEquipe(id) {
+  if (!confirm('Supprimer cette équipe ?')) return;
+  equipes=equipes.filter(e=>e.id!==id);
+  logements.forEach(l=>{if(l.teamId===id)l.teamId=null;});
+  saveData(); renderAll(); toast('Équipe supprimée','success');
+}
+
+// ══════════════════════════════════════
+//  OPTIMIZE
+// ══════════════════════════════════════
+const toMin = t => { const[h,m]=t.split(':').map(Number); return h*60+m; };
+const toTime = m => `${Math.floor(m/60).toString().padStart(2,'0')}:${(m%60).toString().padStart(2,'0')}`;
+const fakeDist = (a,b) => { const h=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0); return (Math.abs(h(a||'')-h(b||''))%10)+2; };
+
+function optimizeRoutes() {
+  if (!logements.length) { toast('Ajoutez des logements','error'); return; }
+  if (!equipes.length) { toast('Ajoutez au moins une équipe','error'); return; }
+  logements.filter(l=>!l.teamId).forEach((l,i)=>{ l.teamId=equipes[i%equipes.length].id; });
+  routes=[];
+  equipes.forEach(team => {
+    const tl=logements.filter(l=>l.teamId==team.id);
+    if (!tl.length) return;
+    let rem=[...tl], ordered=[], cur=rem.shift();
+    ordered.push(cur);
+    while(rem.length) {
+      let md=Infinity, mi=0;
+      rem.forEach((l,i)=>{ const d=fakeDist(cur.address,l.address); if(d<md){md=d;mi=i;} });
+      cur=rem.splice(mi,1)[0]; ordered.push(cur);
+    }
+    let time=toMin(settings.start||'08:30'), totalKm=0;
+    const stops=ordered.map((l,i)=>{
+      let km=0,tmin=0;
+      if(i>0){ km=fakeDist(ordered[i-1].address,l.address); tmin=Math.round(km/(settings.speed||25)*60); totalKm+=km; time+=tmin; }
+      if(settings.lunch>0&&time>=720&&time<720+parseInt(settings.lunch)) time=720+parseInt(settings.lunch);
+      if(time<toMin(l.checkout)) time=toMin(l.checkout);
+      const arrival=toTime(time); time+=l.duration;
+      return {...l,arrival,depart:toTime(time),km,tmin};
+    });
+    routes.push({teamId:team.id,stops,totalKm:Math.round(totalKm),totalMins:stops.reduce((a,s)=>a+s.duration,0)});
+  });
+  saveData(); renderAll();
+  const btn=document.querySelector('.nav-btn[data-page="pageTournees"]');
+  if(btn) showPage('pageTournees',btn);
+  toast(`${routes.length} tournée${routes.length>1?'s':''} générée${routes.length>1?'s':''} ⚡`,'success');
+}
+
+// ══════════════════════════════════════
+//  TOURNÉES
+// ══════════════════════════════════════
+function renderTournees() {
+  const wrap=document.getElementById('tourneesWrap');
+  const sub=document.getElementById('tourneeSub');
+  if (!routes.length) {
+    sub.textContent='Aucune tournée générée';
+    wrap.innerHTML=`<div class="empty"><div class="empty-icon">🗺️</div><div class="empty-title">Pas encore de tournées</div><div class="empty-text">Cliquez sur "Générer les tournées" depuis le dashboard.</div></div>`;
+    return;
+  }
+  sub.textContent=`${routes.reduce((a,r)=>a+r.stops.length,0)} logements · ${routes.length} équipes · ${routes.reduce((a,r)=>a+r.totalKm,0)}km total`;
+  wrap.innerHTML=`<div class="tournee-grid">${routes.map(r=>{
+    const e=equipes.find(x=>x.id===r.teamId); if(!e) return '';
+    const h=Math.floor(r.totalMins/60), m=r.totalMins%60;
+    return `<div class="tc">
+      <div class="tc-header">
+        <div class="tc-avatar" style="background:${e.color}22;border:1.5px solid ${e.color}55;">${e.emoji}</div>
+        <div style="flex:1;"><div class="tc-name" style="color:${e.color}">${e.name}</div><div class="tc-meta">${r.stops.length} stops · ${e.size} membres</div></div>
+        <button class="btn btn-green btn-sm" onclick="sendWhatsApp(${e.id})">💬</button>
+        <button class="btn btn-secondary btn-sm" onclick="openMaps(${e.id})">🗺️</button>
+      </div>
+      <div class="tc-stats">
+        <div class="ts"><div class="ts-val" style="color:${e.color}">${r.stops.length}</div><div class="ts-lbl">stops</div></div>
+        <div class="ts"><div class="ts-val" style="color:${e.color}">${r.totalKm}km</div><div class="ts-lbl">distance</div></div>
+        <div class="ts"><div class="ts-val" style="color:${e.color}">${h}h${m.toString().padStart(2,'0')}</div><div class="ts-lbl">durée</div></div>
+      </div>
+      <div class="stops">
+        ${r.stops.map((s,i)=>`
+          ${i>0?`<div class="travel-line">↳ ${s.km}km · ~${s.tmin}min de trajet</div>`:''}
+          <div class="stop-row">
+            <div class="stop-num" style="border-color:${e.color};color:${e.color};">${i+1}</div>
+            <div class="stop-content">
+              <div class="stop-name">${s.name}</div>
+              <div class="stop-addr">${s.address||'—'}</div>
+              <div class="chips">
+                <span class="chip chip-t">🕐 ${s.arrival}</span>
+                <span class="chip chip-d">⏱ ${s.duration}min</span>
+                <span class="chip">🛏 ${s.rooms}p</span>
+                <span class="chip chip-g">✓ ${s.depart}</span>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="tc-actions">
+        <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="openMaps(${e.id})">🗺️ Google Maps</button>
+        <button class="btn btn-green btn-sm" style="flex:1;" onclick="sendWhatsApp(${e.id})">💬 WhatsApp</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ══════════════════════════════════════
+//  MA TOURNÉE
+// ══════════════════════════════════════
+function renderMaTournee() {
+  const wrap=document.getElementById('maTourneeWrap');
+  const sub=document.getElementById('maSub');
+  if (!currentUser) return;
+  const teamId=currentUser.teamId;
+  const e=equipes.find(x=>x.id==teamId);
+  const r=routes.find(x=>x.teamId==teamId);
+  const dateStr=currentDate.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  sub.textContent=dateStr;
+  if (!e) { wrap.innerHTML=`<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Pas d'équipe associée</div><div class="empty-text">Contactez votre responsable.</div></div>`; return; }
+  if (!r) { wrap.innerHTML=`<div class="mt-header"><div style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;">${e.emoji}</div><div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;">${e.name}</div><div style="opacity:0.7;font-size:13px;">${dateStr}</div></div></div><div class="empty"><div class="empty-icon">⏳</div><div class="empty-title">Planning en attente</div><div class="empty-text">Votre responsable n'a pas encore généré le planning du jour.</div></div>`; return; }
+  const h=Math.floor(r.totalMins/60), m=r.totalMins%60;
+  wrap.innerHTML=`
+    <div class="mt-header">
+      <div style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;">${e.emoji}</div>
+      <div style="flex:1;"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;">${e.name}</div><div style="opacity:0.7;font-size:13px;">${dateStr} · ${r.stops.length} stops · ${r.totalKm}km · ${h}h${m.toString().padStart(2,'0')}</div></div>
+      <button class="btn btn-secondary btn-sm" onclick="openMaps(${e.id})" style="flex-shrink:0;">🗺️ Itinéraire</button>
+    </div>
+    <div class="mt-stops">
+      ${r.stops.map((s,i)=>`<div class="mt-card">
+        <div class="mt-num" style="background:${e.color}">${i+1}</div>
+        <div style="flex:1;">
+          <div class="mt-name">${s.name}</div>
+          <div class="mt-addr">${s.address||'Adresse à confirmer'}</div>
+          <div class="mt-times">
+            <span class="badge badge-purple">🕐 Arrivée ${s.arrival}</span>
+            <span class="badge badge-amber">⏱ ${s.duration}min</span>
+            <span class="badge badge-green">✓ Départ ${s.depart}</span>
+            <span class="badge badge-gray">🛏 ${s.rooms}p</span>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+            <a href="https://www.google.com/maps/search/?q=${encodeURIComponent(s.address||s.name)}" target="_blank" class="btn btn-secondary btn-sm">📍 GPS</a>
+            ${i<r.stops.length-1?`<span style="font-size:11px;color:var(--ink3);">→ Suivant : ${r.stops[i+1].tmin}min (${r.stops[i+1].km}km)</span>`:'<span class="badge badge-green">🎉 Dernier arrêt</span>'}
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+
+// ══════════════════════════════════════
+//  GESTION DES COMPTES
+// ══════════════════════════════════════
+function renderUsers() {
+  users = loadUsers();
+  document.getElementById('userCount').textContent = users.length + ' compte' + (users.length>1?'s':'');
+  const tbody = document.getElementById('usersTbody');
+  if (!tbody) return;
+  tbody.innerHTML = users.map(u => {
+    const team = equipes.find(e=>e.id==u.teamId);
+    const color = u.color || ROLE_COLORS[u.role] || '#6c47ff';
+    return `<tr>
+      <td><div class="user-row-avatar" style="background:${color}">${(u.first[0]||'?').toUpperCase()}</div></td>
+      <td><code style="font-size:12px;background:var(--bg);padding:2px 8px;border-radius:5px;">${u.login}</code></td>
+      <td><strong>${u.first} ${u.last}</strong></td>
+      <td><span class="badge" style="background:${color}22;color:${color}">${ROLE_LABELS[u.role]||u.role}</span></td>
+      <td>${team?`<span style="display:flex;align-items:center;gap:5px;"><span class="cdot" style="background:${team.color}"></span>${team.emoji} ${team.name}</span>`:'<span style="color:var(--ink3);">—</span>'}</td>
+      <td style="font-size:12px;color:var(--ink3);">${u.lastLogin||'Jamais'}</td>
+      <td><span class="badge ${u.active?'badge-green':'badge-red'}">${u.active?'Actif':'Inactif'}</span></td>
+      <td>
+        <div style="display:flex;gap:4px;">
+          ${u.role!=='admin'?`<button class="btn btn-secondary btn-sm" onclick="toggleActive(${u.id})">${u.active?'Désactiver':'Activer'}</button>`:''}
+          <button class="btn btn-secondary btn-sm" onclick="openPwModal(${u.id})">🔑</button>
+          ${u.role!=='admin'?`<button class="btn btn-red btn-sm" onclick="deleteUser(${u.id})">🗑</button>`:''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function createUser() {
+  users = loadUsers();
+  const login = document.getElementById('uLogin').value.trim().toLowerCase();
+  const pw = document.getElementById('uPw').value;
+  const first = document.getElementById('uFirst').value.trim();
+  const last = document.getElementById('uLast').value.trim();
+  const role = document.getElementById('uRole').value;
+  const teamId = document.getElementById('uTeam').value ? parseInt(document.getElementById('uTeam').value) : null;
+  const wa = document.getElementById('uWa').value.trim();
+  const err = document.getElementById('uError');
+
+  if (!login||!pw||!first||!last) { err.style.display='block'; err.textContent='Tous les champs obligatoires doivent être remplis.'; return; }
+  if (pw.length < 6) { err.style.display='block'; err.textContent='Le mot de passe doit contenir au moins 6 caractères.'; return; }
+  if (users.find(u=>u.login.toLowerCase()===login)) { err.style.display='block'; err.textContent='Cet identifiant existe déjà.'; return; }
+
+  err.style.display='none';
+  const colors = Object.values(ROLE_COLORS);
+  users.push({ id:Date.now(), login, pw, first, last, role, teamId, wa, active:true, lastLogin:null, color:ROLE_COLORS[role]||colors[users.length%colors.length] });
+  saveUsers(users);
+  closeModal('userModal');
+  renderUsers();
+  toast(`Compte "${login}" créé ✓ · Mot de passe : ${pw}`,'success');
+  document.getElementById('uLogin').value='';
+  document.getElementById('uPw').value='';
+  document.getElementById('uFirst').value='';
+  document.getElementById('uLast').value='';
+}
+
+function toggleActive(id) {
+  users = loadUsers();
+  const u = users.find(x=>x.id===id);
+  if (!u) return;
+  u.active = !u.active;
+  saveUsers(users);
+  renderUsers();
+  toast(`Compte ${u.active?'activé':'désactivé'}`,'success');
+}
+
+function deleteUser(id) {
+  if (!confirm('Supprimer ce compte définitivement ?')) return;
+  users = loadUsers();
+  users = users.filter(u=>u.id!==id);
+  saveUsers(users);
+  renderUsers();
+  toast('Compte supprimé','success');
+}
+
+function openPwModal(id) {
+  document.getElementById('pwUserId').value = id;
+  document.getElementById('newPw').value = '';
+  document.getElementById('confirmPw').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  openModal('pwModal');
+}
+
+function savePw() {
+  const id = parseInt(document.getElementById('pwUserId').value);
+  const pw = document.getElementById('newPw').value;
+  const confirm2 = document.getElementById('confirmPw').value;
+  const err = document.getElementById('pwError');
+  if (pw.length < 6) { err.style.display='block'; err.textContent='Minimum 6 caractères.'; return; }
+  if (pw !== confirm2) { err.style.display='block'; err.textContent='Les mots de passe ne correspondent pas.'; return; }
+  err.style.display='none';
+  users = loadUsers();
+  const u = users.find(x=>x.id===id);
+  if (u) { u.pw = pw; saveUsers(users); toast(`Mot de passe mis à jour ✓`,'success'); closeModal('pwModal'); }
+}
+
+// Profile modal
+function renderProfile() {
+  const u = currentUser;
+  const color = u.color || ROLE_COLORS[u.role] || '#6c47ff';
+  document.getElementById('profileContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+      <div style="width:54px;height:54px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;">${u.first[0].toUpperCase()}</div>
+      <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;">${u.first} ${u.last}</div><div style="font-size:12px;color:var(--ink3);">${u.login} · ${ROLE_LABELS[u.role]}</div></div>
+    </div>
+    <div class="sep"></div>
+    <div style="margin-bottom:14px;">
+      <label>Nouveau mot de passe</label>
+      <div class="field-pw-wrap"><input type="password" id="selfPw" class="field-input" placeholder="Min. 6 caractères"><button class="pw-toggle" onclick="togglePw('selfPw',this)" tabindex="-1">👁</button></div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label>Confirmer</label>
+      <div class="field-pw-wrap"><input type="password" id="selfPwC" class="field-input" placeholder="Répétez"><button class="pw-toggle" onclick="togglePw('selfPwC',this)" tabindex="-1">👁</button></div>
+    </div>
+    <div id="selfPwErr" class="error-box"></div>
+    <button class="btn btn-primary btn-full" onclick="selfChangePw()">Changer mon mot de passe</button>
+    <div class="sep"></div>
+    <button class="btn btn-ghost btn-full" onclick="doLogout()">Se déconnecter</button>`;
+}
+
+function selfChangePw() {
+  const pw = document.getElementById('selfPw').value;
+  const c = document.getElementById('selfPwC').value;
+  const err = document.getElementById('selfPwErr');
+  if (pw.length < 6) { err.style.display='block'; err.textContent='Minimum 6 caractères.'; return; }
+  if (pw !== c) { err.style.display='block'; err.textContent='Les mots de passe ne correspondent pas.'; return; }
+  err.style.display='none';
+  users = loadUsers();
+  const u = users.find(x=>x.id===currentUser.id);
+  if (u) { u.pw=pw; currentUser.pw=pw; saveUsers(users); toast('Mot de passe modifié ✓','success'); closeModal('profileModal'); }
+}
+
+// ══════════════════════════════════════
+//  WHATSAPP
+// ══════════════════════════════════════
+function buildMsg(r, e) {
+  const ds = currentDate.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  let msg = (settings.waIntro||'Bonjour {equipe} ! Voici votre tournée du {date} :').replace('{equipe}',e.name).replace('{date}',ds)+'\n\n';
+  r.stops.forEach((s,i)=>{
+    msg+=`${i+1}. *${s.name}*\n📍 ${s.address||'Adresse à confirmer'}\n🕐 Arrivée : ${s.arrival} | Départ : ${s.depart}\n⏱ ${s.duration}min | 🛏 ${s.rooms} pièce${s.rooms>1?'s':''}\n`;
+    if(i<r.stops.length-1) msg+=`🚗 Trajet suivant : ~${r.stops[i+1].tmin}min\n`;
+    msg+='\n';
+  });
+  msg+=`📊 *Total : ${r.totalKm}km · ${Math.floor(r.totalMins/60)}h${(r.totalMins%60).toString().padStart(2,'0')}*\n\n${settings.waSig||'Bonne journée ! 🏠'}`;
+  return msg;
+}
+
+function sendWhatsApp(teamId) {
+  const e=equipes.find(x=>x.id===teamId), r=routes.find(x=>x.teamId===teamId);
+  if (!e||!r) { toast('Tournée non trouvée','error'); return; }
+  const msg=buildMsg(r,e);
+  document.getElementById('waContent').innerHTML=`
+    <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.9;white-space:pre-wrap;max-height:280px;overflow-y:auto;font-family:monospace;border:1px solid var(--border);">${msg}</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-green btn-full" onclick="openWa('${encodeURIComponent(msg)}','${e.wa||''}')">💬 Ouvrir WhatsApp</button>
+      <button class="btn btn-secondary" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(msg)}')).then(()=>toast('Copié ✓','success'))">📋</button>
+    </div>`;
+  openModal('waModal');
+}
+
+function sendAllWhatsApp() {
+  if (!routes.length) { toast('Générez d\'abord les tournées','error'); return; }
+  let html='';
+  routes.forEach(r=>{
+    const e=equipes.find(x=>x.id===r.teamId); if(!e) return;
+    const msg=buildMsg(r,e); const enc=encodeURIComponent(msg);
+    html+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+      <div style="width:36px;height:36px;border-radius:9px;background:${e.color};display:flex;align-items:center;justify-content:center;font-size:18px;">${e.emoji}</div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${e.name}</div><div style="font-size:11px;color:var(--ink3);">${r.stops.length} stops · ${r.totalKm}km</div></div>
+      <button class="btn btn-green btn-sm" onclick="openWa('${enc}','${e.wa||''}')">💬</button>
+      <button class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText(decodeURIComponent('${enc}')).then(()=>toast('Copié ✓','success'))">📋</button>
+    </div>`;
+  });
+  document.getElementById('waContent').innerHTML=html;
+  openModal('waModal');
+}
+
+function openWa(enc, wa) {
+  const msg=decodeURIComponent(enc);
+  const phone=wa?wa.replace(/\D/g,''):'';
+  window.open(phone?`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function openMaps(teamId) {
+  const r=routes.find(x=>x.teamId===teamId); if(!r){toast('Tournée non trouvée','error');return;}
+  window.open(`https://www.google.com/maps/dir/${r.stops.map(s=>encodeURIComponent(s.address||s.name)).join('/')}`,'_blank');
+}
+
+// ══════════════════════════════════════
+//  IMPORT
+// ══════════════════════════════════════
+function handleImport(e) {
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{ if(file.name.endsWith('.ics')) importICS(ev.target.result); else importCSV(ev.target.result); closeModal('importModal'); };
+  reader.readAsText(file);
+}
+
+function importCSV(content) {
+  const lines=content.trim().split('\n'), header=lines[0].toLowerCase().split(/[,;]/); let n=0;
+  for(let i=1;i<lines.length;i++) {
+    const vals=lines[i].split(/[,;]/); if(!vals[0]) continue;
+    const o={}; header.forEach((h,idx)=>o[h.trim()]=(vals[idx]||'').trim().replace(/^"|"$/g,''));
+    logements.push({id:Date.now()+i,name:o.nom||o.name||`Logement ${logements.length+1}`,address:o.adresse||o.address||'',checkout:o.checkout||'11:00',checkin:o.checkin||'15:00',rooms:parseInt(o.pieces||o.rooms)||2,duration:parseInt(o.duree||o.duration)||90,teamId:null,ics:[]}); n++;
+  }
+  saveData(); renderAll(); toast(`${n} logements importés ✓`,'success');
+}
+
+function importICS(content) {
+  content=content.replace(/\r\n[ \t]/g,'').replace(/\r/g,'');
+  const events=content.split('BEGIN:VEVENT'); let n=0;
+  for(let i=1;i<events.length;i++) {
+    const ev=events[i];
+    const sum=ev.match(/^SUMMARY[^:]*:(.+)$/m), loc=ev.match(/^LOCATION[^:]*:(.+)$/m);
+    const ds=ev.match(/^DTSTART[^:]*:(\d{8}T\d{6}Z?|\d{8})/m), de=ev.match(/^DTEND[^:]*:(\d{8}T\d{6}Z?|\d{8})/m);
+    if(!sum) continue; const name=sum[1].trim();
+    if(/blocked|not available/i.test(name)&&!loc) continue;
+    let co='11:00',ci='15:00';
+    if(ds&&ds[1].length>=13){const h=ds[1].slice(9,11),m=ds[1].slice(11,13);co=`${h}:${m}`;if(co==='00:00')co='11:00';}
+    if(de&&de[1].length>=13){const h=de[1].slice(9,11),m=de[1].slice(11,13);ci=`${h}:${m}`;if(ci==='00:00')ci='15:00';}
+    logements.push({id:Date.now()+i,name,address:loc?loc[1].trim():'',checkout:co,checkin:ci,rooms:2,duration:90,teamId:null,ics:[]}); n++;
+  }
+  saveData(); renderAll(); toast(`${n} logements importés depuis ICS ✓`,'success');
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const iz=document.getElementById('importZone');
+  if(iz){ iz.addEventListener('dragover',e=>{e.preventDefault();iz.classList.add('over');}); iz.addEventListener('dragleave',()=>iz.classList.remove('over')); iz.addEventListener('drop',e=>{e.preventDefault();iz.classList.remove('over');const f=e.dataTransfer.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{if(f.name.endsWith('.ics'))importICS(ev.target.result);else importCSV(ev.target.result);closeModal('importModal');};r.readAsText(f);}); }
+});
+
+// ══════════════════════════════════════
+//  DEMO
+// ══════════════════════════════════════
+function loadDemo() {
+  if(!equipes.length) {
+    equipes=[
+      {id:1,name:'Équipe Alpha',emoji:'🧹',color:'#6c47ff',size:2,zone:'Centre/Capitole',wa:'+33600000001',members:'Maria, Jules'},
+      {id:2,name:'Équipe Beta',emoji:'✨',color:'#2563eb',size:3,zone:'Saint-Cyprien',wa:'+33600000002',members:'Sara, Karim, Lena'},
+      {id:3,name:'Équipe Gamma',emoji:'⭐',color:'#059669',size:2,zone:'Nord/Compans',wa:'+33600000003',members:'Thomas, Ana'},
+    ];
+  }
+  logements=[
+    {id:101,name:'Studio Capitole',address:'12 Place du Capitole, Toulouse',checkout:'10:30',checkin:'15:00',rooms:1,duration:60,teamId:1,ics:[{platform:'airbnb',url:'https://airbnb.com/ical/xxx.ics',lastSync:'09:15'}]},
+    {id:102,name:'Appart Carmes',address:'8 Rue des Fleurs, Toulouse',checkout:'11:00',checkin:'16:00',rooms:2,duration:90,teamId:1,ics:[{platform:'booking',url:'https://booking.com/ical/xxx.ics',lastSync:'09:15'}]},
+    {id:103,name:'Loft Saint-Cyprien',address:'24 Rue Réclusane, Toulouse',checkout:'10:00',checkin:'14:00',rooms:2,duration:80,teamId:2,ics:[]},
+    {id:104,name:'T3 Compans',address:'5 Allée de Barcelone, Toulouse',checkout:'12:00',checkin:'17:00',rooms:3,duration:120,teamId:3,ics:[{platform:'airbnb',url:'https://airbnb.com/ical/yyy.ics',lastSync:'09:15'}]},
+    {id:105,name:'Suite Minimes',address:'18 Rue des Minimes, Toulouse',checkout:'11:30',checkin:'15:30',rooms:3,duration:110,teamId:3,ics:[]},
+    {id:106,name:'Studio Esquirol',address:'3 Rue Alsace-Lorraine, Toulouse',checkout:'10:00',checkin:'14:00',rooms:1,duration:55,teamId:1,ics:[{platform:'airbnb',url:'https://airbnb.com/ical/zzz.ics',lastSync:'09:15'}]},
+    {id:107,name:'Appart Matabiau',address:'15 Bd de Bonrepos, Toulouse',checkout:'11:00',checkin:'15:00',rooms:2,duration:90,teamId:2,ics:[]},
+    {id:108,name:'Villa Rangueil',address:'42 Route de Narbonne, Toulouse',checkout:'12:00',checkin:'16:00',rooms:4,duration:150,teamId:2,ics:[{platform:'booking',url:'https://booking.com/ical/aaa.ics',lastSync:'09:15'}]},
+    {id:109,name:'T2 Wilson',address:'7 Place Wilson, Toulouse',checkout:'10:30',checkin:'15:00',rooms:2,duration:80,teamId:1,ics:[]},
+    {id:110,name:'Studio Jean-Jaurès',address:'29 Ave Jean Jaurès, Toulouse',checkout:'11:00',checkin:'15:00',rooms:1,duration:60,teamId:2,ics:[]},
+    {id:111,name:'Appart Jolimont',address:'11 Rue de Jolimont, Toulouse',checkout:'11:00',checkin:'16:00',rooms:2,duration:90,teamId:3,ics:[]},
+    {id:112,name:'T3 Borderouge',address:'3 Ave de Grande-Bretagne, Toulouse',checkout:'10:00',checkin:'14:00',rooms:3,duration:120,teamId:3,ics:[{platform:'airbnb',url:'https://airbnb.com/ical/bbb.ics',lastSync:'09:15'}]},
+  ];
+  saveData(); closeModal('importModal'); renderAll(); updateAllSelects(); toast('12 logements + 3 équipes chargés ✓','success');
+}
+
+// ══════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════
+function saveSettings() {
+  settings.base=document.getElementById('sBase').value;
+  settings.start=document.getElementById('sStart').value;
+  settings.end=document.getElementById('sEnd').value;
+  settings.speed=parseInt(document.getElementById('sSpeed').value)||25;
+  settings.lunch=parseInt(document.getElementById('sLunch').value)||0;
+  settings.waIntro=document.getElementById('sWaIntro').value;
+  settings.waSig=document.getElementById('sWaSig').value;
+  settings.company=document.getElementById('sCompany').value;
+  saveData(); toast('Paramètres sauvegardés ✓','success');
+}
+
+function applySettings() {
+  if(document.getElementById('sBase')) document.getElementById('sBase').value=settings.base||'';
+  if(document.getElementById('sStart')) document.getElementById('sStart').value=settings.start||'08:30';
+  if(document.getElementById('sEnd')) document.getElementById('sEnd').value=settings.end||'19:00';
+  if(document.getElementById('sSpeed')) document.getElementById('sSpeed').value=settings.speed||25;
+  if(document.getElementById('sLunch')) document.getElementById('sLunch').value=settings.lunch||30;
+  if(document.getElementById('sWaIntro')) document.getElementById('sWaIntro').value=settings.waIntro||'';
+  if(document.getElementById('sWaSig')) document.getElementById('sWaSig').value=settings.waSig||'';
+  if(document.getElementById('sCompany')) document.getElementById('sCompany').value=settings.company||'';
+}
+
+// ══════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if (id==='profileModal') renderProfile();
+  if (id==='pageParametres') applySettings();
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('click', e => { if(e.target.classList.contains('overlay')) e.target.classList.remove('open'); });
+
+function updateAllSelects() {
+  const teamOpts='<option value="">Auto</option>'+equipes.map(e=>`<option value="${e.id}">${e.emoji} ${e.name}</option>`).join('');
+  document.querySelectorAll('#lTeam').forEach(s=>s.innerHTML=teamOpts);
+  const teamOpts2='<option value="">Aucune</option>'+equipes.map(e=>`<option value="${e.id}">${e.emoji} ${e.name}</option>`).join('');
+  document.querySelectorAll('#uTeam').forEach(s=>s.innerHTML=teamOpts2);
+}
+
+function toast(msg, type='success') {
+  const c=document.getElementById('toasts');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<span>${type==='success'?'✅':type==='error'?'❌':'ℹ️'}</span> ${msg}`;
+  c.appendChild(t); setTimeout(()=>t.remove(),3500);
+}
+</script>
+</body>
+</html>
